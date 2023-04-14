@@ -13,4 +13,5 @@ jobs:
         env: 
           BRANCH_NAME: ${{ github.ref }}
         run: |
-         echo $BRANCH_NAME
+          BRANCH_NAME=${BRANCH_NAME#refs/heads/}
+          echo $BRANCH_NAME
