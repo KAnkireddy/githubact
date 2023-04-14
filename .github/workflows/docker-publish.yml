@@ -10,4 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check branch name
-        run: echo "Branch name is ${GITHUB_REF#refs/heads/}"
+        env: 
+          BRANCH_NAME: ${GITHUB_REF#refs/heads/}
+        run: |
+          sed -i "s/branchname/$BRANCH_NAME/g" values.yaml
+          ls -la
+          cat values.yaml
