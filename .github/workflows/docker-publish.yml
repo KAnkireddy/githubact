@@ -11,8 +11,11 @@ jobs:
     steps:
       - name: Check branch name
         env: 
-          BRANCH_NAME: ${GITHUB_REF#refs/heads/}
+          BRANCH_NAME: ${{ github.ref }}
         run: |
-          sed -i "s/branchname/$BRANCH_NAME/g" values.yaml
+          if [[ "$BRANCH_NAME" =~ refs/heads/ ]]; then
+            BRANCH_NAME=${BRANCH_NAME#refs/heads/}
+          fi
+          sed -i "s|branchname|${BRANCH_NAME}|g" values.yaml || { echo "Error: Failed to update values.yaml"; exit 1; }
           ls -la
           cat values.yaml
